@@ -1,20 +1,12 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
-  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@remix-run/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "jsx": "react-jsx", // This can remain as is if using JSX/TSX
+    "module": "commonjs", // Use 'commonjs' for ts-node compatibility
+    "moduleResolution": "node", // Change this to 'node' for ts-node
     "resolveJsonModule": true,
     "target": "ES2022",
     "strict": true,
@@ -25,8 +17,16 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-
-    // Vite takes care of building everything, not tsc.
     "noEmit": true
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx",
+    "app/components/hashingFuncs.tsx",
+    "prisma/seed.tsx" // Ensure this path is correct
+  ]
 }
