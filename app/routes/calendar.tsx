@@ -29,7 +29,7 @@ export default function Calendar() {
   return (
     <div className="flex flex-col h-screen items-center space-y-4 p-4">
       <div className="w-full flex justify-end">
-        <Link to={"/logout"} className="btn">
+        <Link to={"/logout"} className="btn warn">
           Logout
         </Link>
       </div>
@@ -37,11 +37,14 @@ export default function Calendar() {
       <div className="flex w-full space-x-4">
         <select
           className="flex-grow"
-          onChange={(e) =>
-            setSelectedClient(
-              clients.find((client) => client.client_id === e.target.value)
-            )
-          }
+          onChange={(e) => {
+            const client = clients.find(
+              (client) => client.client_id === e.target.value
+            );
+            if (client) {
+              setSelectedClient(client);
+            }
+          }}
         >
           {clients.map((client) => (
             <option key={client.client_id} value={client.client_id}>

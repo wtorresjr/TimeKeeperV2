@@ -10,8 +10,10 @@ export const action = async ({ request }: { request: Request }) => {
 
 export default function Logout() {
   return (
-    <form method="post">
-      <button type="submit">Logout</button>
+    <form method="post" className="centerOfScreen">
+      <button type="submit" className="btn warn">
+        Logout
+      </button>
     </form>
   );
 }
