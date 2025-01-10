@@ -13,7 +13,7 @@ body {
 
 /*Custom styles*/
 
-.centerOfScreen {
+.centerOnScreen {
   @apply flex items-center justify-center h-screen;
 }
 
