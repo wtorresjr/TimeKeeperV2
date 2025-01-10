@@ -36,7 +36,7 @@ export default function Calendar() {
       <div className="p-2">Select a client</div>
       <div className="flex w-full space-x-4">
         <select
-          className="flex-grow"
+          className="dropdown flex-grow"
           onChange={(e) => {
             const client = clients.find(
               (client) => client.client_id === e.target.value

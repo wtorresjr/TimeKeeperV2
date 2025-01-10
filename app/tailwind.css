@@ -24,3 +24,7 @@ body {
 .warn {
   @apply bg-red-700 hover:bg-gray-600;
 }
+
+.dropdown {
+  @apply bg-white text-blue-600 rounded-md;
+}
