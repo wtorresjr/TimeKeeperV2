@@ -4,20 +4,24 @@
     "types": ["@remix-run/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx", // This can remain as is if using JSX/TSX
-    "module": "commonjs", // Use 'commonjs' for ts-node compatibility
-    "moduleResolution": "node", // Change this to 'node' for ts-node
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2022",
+    "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "@app/*": ["app/*"]
     },
     "noEmit": true
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifiers": true
   },
   "include": [
     "**/*.ts",
@@ -26,7 +30,7 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx",
-    "app/components/hashingFuncs.tsx",
-    "prisma/seed.tsx" // Ensure this path is correct
+    "prisma/seed.ts",
+    "prisma/seedClients.ts"
   ]
 }

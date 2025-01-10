@@ -20,6 +20,7 @@ model Tech {
   email     String    @unique
   fullName  String
   password  String
+  isBCBA    Boolean
   clients   Client[]  
 }
 
@@ -31,4 +32,5 @@ model Client {
   updatedAt       DateTime @updatedAt
   client_name     String
   client_initials String
+  hourly_rate     Float
 }

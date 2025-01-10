@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { hashPassword } from "../app/components/hashingFuncs";
+import { hashPassword } from "../app/components/hashingFuncs.js";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -13,6 +13,7 @@ async function main() {
         email: randomEmail,
         fullName: randomName,
         password: await hashPassword("password"),
+        isBCBA: i % 2 === 0,
       },
     });
     console.log(`Created tech: ${tech.fullName}`);

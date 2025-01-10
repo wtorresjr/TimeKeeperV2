@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
+const rates = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70];
+
 const prisma = new PrismaClient();
 
 let fullName: string;
@@ -24,6 +26,7 @@ async function main() {
     tech_id: techs[Math.floor(Math.random() * techs.length)].id,
     client_name: generateNameInit(),
     client_initials: initials,
+    hourly_rate: rates[Math.floor(Math.random() * rates.length)],
     createdAt: new Date(),
     updatedAt: new Date(),
   }));

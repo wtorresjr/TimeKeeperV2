@@ -13,3 +13,5 @@ export async function verifyPassword(
   const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
   return isMatch;
 }
+
+export {};
