@@ -3,6 +3,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { PrismaClient } from "@prisma/client";
 import { requireUserId } from "../utils/session.server";
 import { useState } from "react";
+import NewHoursComp from "../components/newHoursComp";
 
 const prisma = new PrismaClient();
 
@@ -21,9 +22,10 @@ export default function Calendar() {
   const { clients } = useLoaderData<typeof loader>();
 
   const [selectedClient, setSelectedClient] = useState(clients[0]);
+  const [showNewHours, setShowNewHours] = useState(false);
 
-  const showAlert = () => {
-    alert(`Add Hours For ${selectedClient.client_name}`);
+  const showNewHoursComponent = () => {
+    setShowNewHours(true);
   };
 
   return (
@@ -44,6 +46,7 @@ export default function Calendar() {
             if (client) {
               setSelectedClient(client);
             }
+            setShowNewHours(false);
           }}
         >
           {clients.map((client) => (
@@ -52,10 +55,11 @@ export default function Calendar() {
             </option>
           ))}
         </select>
-        <button className="btn" onClick={showAlert}>
+        <button className="btn" onClick={showNewHoursComponent}>
           Add Hours
         </button>
       </div>
+      {showNewHours && <NewHoursComp />}
     </div>
   );
 }
