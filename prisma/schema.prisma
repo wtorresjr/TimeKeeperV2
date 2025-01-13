@@ -22,6 +22,7 @@ model Tech {
   password  String
   isBCBA    Boolean
   clients   Client[]  
+  hours     Hours[]
 }
 
 model Client {
@@ -33,4 +34,15 @@ model Client {
   client_name     String
   client_initials String
   hourly_rate     Float
+  hours           Hours[]
+}
+
+model Hours {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime
+  hours     Float
+  tech_id   String   @db.ObjectId
+  tech      Tech     @relation(fields: [tech_id], references: [id])
+  client_id String   @db.ObjectId
+  client    Client   @relation(fields: [client_id], references: [client_id])
 }
