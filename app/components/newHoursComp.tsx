@@ -9,7 +9,6 @@ const NewHoursComp = () => {
     const start = new Date(`1970-01-01T${startTime}:00`);
     let end = new Date(`1970-01-01T${endTime}:00`);
 
-    // If end time is earlier than start time, assume it's the next day
     if (end < start) {
       end.setDate(end.getDate() + 1);
     }
