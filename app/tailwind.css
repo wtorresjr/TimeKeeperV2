@@ -18,13 +18,37 @@ body {
 }
 
 .btn {
-  @apply relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  @apply flex justify-center py-2 px-4 border text-center border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
 }
 
 .warn {
   @apply bg-red-700 hover:bg-gray-600;
 }
 
+.yellBtn {
+  @apply bg-yellow-600 hover:bg-gray-800;
+}
+
 .dropdown {
   @apply bg-white text-blue-600 rounded-md;
+}
+
+.inputItem {
+  @apply bg-gray-600 rounded-md p-4;
+}
+
+.addHoursContainer {
+  @apply flex flex-col w-1/2;
+}
+
+.addHoursForm {
+  @apply flex flex-row w-full justify-between;
+}
+
+.borderLine {
+  @apply border-t border-gray-600 my-4 w-full;
+}
+
+.inputGroup {
+  @apply flex flex-col space-y-2;
 }

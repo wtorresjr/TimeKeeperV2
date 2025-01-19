@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,6 +10,9 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="flex h-screen items-center justify-center">Home Page</div>
+    <div className="centerOnScreen flex-col">
+      Time Keeper App
+      <Link to={"/calendar"}>Add Hours</Link>
+    </div>
   );
 }
