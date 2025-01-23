@@ -3,11 +3,12 @@ import { Form, useActionData } from "@remix-run/react";
 import { PrismaClient } from "@prisma/client";
 import { verifyPassword } from "@app/components/hashingFuncs";
 import { createUserSession } from "@app/utils/session.server";
-
+import { storage } from "@app/utils/session.server";
 const prisma = new PrismaClient();
 
 // Server-side action to handle login
 export const action = async ({ request }: { request: Request }) => {
+  const session = await storage.getSession(request.headers.get("Cookie"));
   const formData = await request.formData();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -27,9 +28,13 @@ export const action = async ({ request }: { request: Request }) => {
   const isPasswordValid = await verifyPassword(password, user.password);
   if (!isPasswordValid) {
     return json({ error: "Invalid email or password." }, { status: 401 });
-  } else {
-    return createUserSession(user.id, "/calendar");
   }
+
+  // Get the stored redirect URL or default to calendar
+  const redirectTo = session.get("redirectTo") || "/login";
+  session.unset("redirectTo"); // Clear the stored URL
+
+  return createUserSession(user.id, redirectTo);
 };
 
 // Login Form Component
@@ -38,14 +43,12 @@ export default function Login() {
 
   return (
     <div className="centerOnScreen">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-6">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white-900">
-            Time Keeper Login
-          </h2>
+          <h2 className="title">Time Keeper Login</h2>
         </div>
         <Form method="post" className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm space-y-6">
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address
@@ -56,7 +59,7 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="roundedInputStyle"
                 placeholder="Email address"
               />
             </div>
@@ -70,7 +73,7 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="roundedInputStyle"
                 placeholder="Password"
               />
             </div>
@@ -81,10 +84,7 @@ export default function Login() {
             </p>
           )}
           <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            <button type="submit" className="roundedButtonStyle">
               Login
             </button>
           </div>

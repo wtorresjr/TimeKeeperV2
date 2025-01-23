@@ -1,6 +1,11 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
+import { EventEmitter } from "events";
+
+EventEmitter.defaultMaxListeners = 20;
 
 declare module "@remix-run/node" {
   interface Future {
@@ -21,6 +26,11 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer],
+    },
+  },
   build: {
     rollupOptions: {
       external: [

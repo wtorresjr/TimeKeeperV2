@@ -31,13 +31,19 @@ export const getUserId = async (request: Request) => {
   return typeof userId === "string" ? userId : null;
 };
 
-export const requireUserId = async (
-  request: Request,
-  redirectTo: string = "/login"
-) => {
+export const requireUserId = async (request: Request) => {
   const userId = await getUserId(request);
   if (!userId) {
-    throw redirect(redirectTo);
+    throw await redirectToLogin(request);
   }
   return userId;
 };
+
+export async function redirectToLogin(request: Request) {
+  const session = await storage.getSession();
+  const url = new URL(request.url);
+  session.set("redirectTo", url.pathname);
+  return redirect("/login", {
+    headers: { "Set-Cookie": await storage.commitSession(session) },
+  });
+}
