@@ -31,7 +31,7 @@ export const action = async ({ request }: { request: Request }) => {
   }
 
   // Get the stored redirect URL or default to calendar
-  const redirectTo = session.get("redirectTo") || "/login";
+  const redirectTo = session.get("redirectTo") || "/";
   session.unset("redirectTo"); // Clear the stored URL
 
   return createUserSession(user.id, redirectTo);

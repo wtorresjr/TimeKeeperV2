@@ -5,12 +5,15 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { NavBar } from "./components/navBar";
 import { getUserId } from "./utils/session.server";
-import { useLoaderData } from "@remix-run/react";
+import { PrismaClient } from "@prisma/client";
 import "./tailwind.css";
+
+const prisma = new PrismaClient();
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -27,15 +30,20 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: { request: Request }) {
   const userId = await getUserId(request);
-  return { userId };
+  if (!userId) {
+    return { user: null };
+  }
+
+  const user = await prisma.tech.findUnique({ where: { id: userId } });
+  return { user };
 }
 
 export function Layout({
   children,
-  userId,
+  user,
 }: {
   children: React.ReactNode;
-  userId: string | null;
+  user: { id: string; isBCBA: boolean } | null;
 }) {
   return (
     <html lang="en">
@@ -46,7 +54,7 @@ export function Layout({
         <Links />
       </head>
       <body>
-        {userId && <NavBar />}
+        {user && <NavBar />}
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -56,9 +64,9 @@ export function Layout({
 }
 
 export default function App() {
-  const { userId } = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>();
   return (
-    <Layout userId={userId}>
+    <Layout user={user}>
       <Outlet />
     </Layout>
   );

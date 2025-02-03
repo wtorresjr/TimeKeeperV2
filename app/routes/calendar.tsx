@@ -8,11 +8,11 @@ import NewHoursComp from "../components/newHoursComp";
 const prisma = new PrismaClient();
 
 export const loader = async ({ request }: { request: Request }) => {
-  const userId = await requireUserId(request);
+  const user = await requireUserId(request);
 
   // Fetch clients for the logged-in tech
   const clients = await prisma.client.findMany({
-    where: { tech_id: userId },
+    where: { tech_id: user.id },
   });
 
   return json({ clients });
@@ -30,11 +30,6 @@ export default function Calendar() {
 
   return (
     <div className="flex flex-col h-screen items-center space-y-4 p-4">
-      <div className="w-full flex justify-end">
-        <Link to={"/logout"} className="btn warn">
-          Logout
-        </Link>
-      </div>
       {clients.length > 0 ? (
         <>
           <div className="p-2">Select a client</div>
@@ -69,7 +64,7 @@ export default function Calendar() {
             There are no clients associated with your account please add a
             client first.
           </div>
-          <button className="btn">Add New Client</button>
+          <Link to={"/add_client"} className="btn">Add New Client</Link>
         </div>
       )}
       {showNewHours && <NewHoursComp />}

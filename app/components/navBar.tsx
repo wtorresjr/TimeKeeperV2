@@ -1,5 +1,11 @@
-// import Logout from "../routes/logout";
+import { Link } from "@remix-run/react";
+import Logout from "./logOut";
 
 export const NavBar = () => {
-  return <div>NavBar</div>;
+  return (
+    <div className="navBar">
+      <Link to={"/"}>Home</Link>
+      <Logout />
+    </div>
+  );
 };

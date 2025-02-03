@@ -1,5 +1,8 @@
+// filepath: /home/reinstall/Documents/Dev-Projects/TimeKeeperV2/app/utils/session.server.tsx
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const sessionSecret = process.env.SESSION_SECRET || "default_secret";
 
 export const storage = createCookieSessionStorage({
@@ -36,7 +39,11 @@ export const requireUserId = async (request: Request) => {
   if (!userId) {
     throw await redirectToLogin(request);
   }
-  return userId;
+  const user = await prisma.tech.findUnique({ where: { id: userId } });
+  if (!user) {
+    throw await redirectToLogin(request);
+  }
+  return user;
 };
 
 export async function redirectToLogin(request: Request) {

@@ -1,7 +1,13 @@
-import type { ActionFunction, MetaFunction } from "@remix-run/node";
+// filepath: /home/reinstall/Documents/Dev-Projects/TimeKeeperV2/app/routes/add_people.tsx
+import type {
+  ActionFunction,
+  MetaFunction,
+  LoaderFunction,
+} from "@remix-run/node";
 import { useActionData, Form } from "@remix-run/react";
 import { addTech } from "@app/db_calls/add.to.db";
 import { requireUserId } from "@app/utils/session.server";
+import { redirect } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,8 +16,11 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }: { request: Request }) => {
-  await requireUserId(request);
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUserId(request);
+  if (!user.isBCBA) {
+    return redirect("/"); // Redirect to home or another route if not BCBA
+  }
   return null;
 };
 

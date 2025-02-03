@@ -38,7 +38,7 @@ body {
 }
 
 .addHoursContainer {
-  @apply flex flex-col w-full;
+  @apply flex w-full;
 }
 
 .addHoursForm {
@@ -63,4 +63,8 @@ body {
 
 .title {
   @apply mt-6 text-center text-3xl font-extrabold text-white;
+}
+
+.navBar {
+  @apply w-full flex items-center p-2 justify-between bg-slate-700 absolute;
 }
