@@ -35,30 +35,43 @@ export default function Calendar() {
           Logout
         </Link>
       </div>
-      <div className="p-2">Select a client</div>
-      <div className="flex w-full space-x-4">
-        <select
-          className="dropdown flex-grow"
-          onChange={(e) => {
-            const client = clients.find(
-              (client) => client.client_id === e.target.value
-            );
-            if (client) {
-              setSelectedClient(client);
-            }
-            setShowNewHours(false);
-          }}
-        >
-          {clients.map((client) => (
-            <option key={client.client_id} value={client.client_id}>
-              {client.client_name}
-            </option>
-          ))}
-        </select>
-        <button className="btn" onClick={showNewHoursComponent}>
-          Add Hours
-        </button>
-      </div>
+      {clients.length > 0 ? (
+        <>
+          <div className="p-2">Select a client</div>
+          <div className="flex w-full space-x-4">
+            <select
+              className="dropdown flex-grow"
+              onChange={(e) => {
+                const client = clients.find(
+                  (client) => client.client_id === e.target.value
+                );
+                if (client) {
+                  setSelectedClient(client);
+                }
+                setShowNewHours(false);
+              }}
+            >
+              {clients.map((client) => (
+                <option key={client.client_id} value={client.client_id}>
+                  {client.client_name}
+                </option>
+              ))}
+            </select>
+
+            <button className="btn" onClick={showNewHoursComponent}>
+              Add Hours
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="centerOnScreen flex-col space-y-4">
+          <div>
+            There are no clients associated with your account please add a
+            client first.
+          </div>
+          <button className="btn">Add New Client</button>
+        </div>
+      )}
       {showNewHours && <NewHoursComp />}
     </div>
   );

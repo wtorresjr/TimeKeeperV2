@@ -1,3 +1,4 @@
+// filepath: /home/reinstall/Documents/Dev-Projects/TimeKeeperV2/app/root.tsx
 import {
   Links,
   Meta,
@@ -6,7 +7,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-
+import { NavBar } from "./components/navBar";
+import { getUserId } from "./utils/session.server";
+import { useLoaderData } from "@remix-run/react";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -22,9 +25,18 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export async function loader({ request }: { request: Request }) {
+  const userId = await getUserId(request);
+  return { userId };
+}
 
-
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({
+  children,
+  userId,
+}: {
+  children: React.ReactNode;
+  userId: string | null;
+}) {
   return (
     <html lang="en">
       <head>
@@ -34,6 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        {userId && <NavBar />}
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -43,5 +56,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { userId } = useLoaderData<typeof loader>();
+  return (
+    <Layout userId={userId}>
+      <Outlet />
+    </Layout>
+  );
 }
