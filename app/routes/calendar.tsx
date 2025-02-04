@@ -14,6 +14,7 @@ export const loader = async ({ request }: { request: Request }) => {
   // Fetch clients for the logged-in tech
   const clients = await prisma.client.findMany({
     where: { tech_id: user.id },
+    include: { hours: true },
   });
 
   return json({ clients });

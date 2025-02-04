@@ -60,8 +60,8 @@ body {
   @apply flex w-full;
 }
 
-.timeDiv{
-  @apply flex flex-col flex-grow space-y-2
+.timeDiv {
+  @apply flex flex-col flex-grow space-y-2;
 }
 
 .roundedInputStyle {

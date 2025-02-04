@@ -8,6 +8,10 @@ interface NewHoursCompProps {
     tech_id: string;
     client_initials: string;
     hourly_rate: number;
+    hours: Array<{
+      date: string;
+      hours: number;
+    }>;
   };
 }
 
@@ -39,10 +43,21 @@ const NewHoursComp: React.FC<NewHoursCompProps> = ({ chosenClient }) => {
 
   return (
     <div className="addHoursContainer">
-      <div className="flex flex-col w-full">
-        <h1 className="flex w-full">{`Adding Hours For ${chosenClient.client_name}`}</h1>
-        <div className="borderLine"></div>
+      <div className="borderLine"></div>
+      <div className="flex flex-row w-full justify-between text-2xl">
+        <h1>{`Adding Hours For ${chosenClient.client_name}`}</h1>
+        <h1>{`Total Hours: ${chosenClient.hours
+          .reduce((acc, hour) => acc + hour.hours, 0)
+          .toFixed(2)}`}</h1>
       </div>
+      <div className="flex flex-row gap-4">
+        <label>Days Worked:</label>
+        {chosenClient.hours &&
+          chosenClient.hours.map((day) => (
+            <div className="text-orange-500">{day.date.split("T")[0]}</div>
+          ))}
+      </div>
+      <div className="borderLine"></div>
       <Form method="post" className="addHoursForm">
         <input type="hidden" name="client_id" value={chosenClient.client_id} />
         <div className="inputGroup">
@@ -97,7 +112,7 @@ const NewHoursComp: React.FC<NewHoursCompProps> = ({ chosenClient }) => {
           </p>
         )}
         <button type="submit" className="btn yellBtn">
-          Add Hours
+          Add
         </button>
       </Form>
     </div>
