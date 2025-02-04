@@ -4,7 +4,7 @@ import Logout from "./logOut";
 export const NavBar = () => {
   return (
     <div className="navBar">
-      <Link to={"/"}>Home</Link>
+      <Link to={"/"}>Menu</Link>
       <Logout />
     </div>
   );

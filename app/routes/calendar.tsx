@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { requireUserId } from "../utils/session.server";
 import { useState } from "react";
 import NewHoursComp from "../components/newHoursComp";
+import { action as newHoursAction } from "../components/newHoursComp.server";
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,8 @@ export const loader = async ({ request }: { request: Request }) => {
 
   return json({ clients });
 };
+
+export const action = newHoursAction;
 
 export default function Calendar() {
   const { clients } = useLoaderData<typeof loader>();
@@ -64,10 +67,12 @@ export default function Calendar() {
             There are no clients associated with your account please add a
             client first.
           </div>
-          <Link to={"/add_client"} className="btn">Add New Client</Link>
+          <Link to={"/add_client"} className="btn">
+            Add New Client
+          </Link>
         </div>
       )}
-      {showNewHours && <NewHoursComp />}
+      {showNewHours && <NewHoursComp chosenClient={selectedClient} />}
     </div>
   );
 }

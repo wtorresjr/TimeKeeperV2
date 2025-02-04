@@ -30,7 +30,9 @@ export default function Index() {
     <div className="centerOnScreen flex-col space-y-6">
       <h2 className="title">Time Keeper App</h2>
       <Link to={"/calendar"}>Add Hours</Link>
+      <Link to={"/add_client"}>Add Client</Link>
       {user?.isBCBA && <Link to={"/add_people"}>Add Tech</Link>}
+      <Link to={"/"}>View Hours</Link>
     </div>
   );
 }

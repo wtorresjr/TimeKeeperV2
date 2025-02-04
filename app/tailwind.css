@@ -38,11 +38,11 @@ body {
 }
 
 .addHoursContainer {
-  @apply flex w-full;
+  @apply flex flex-col w-full;
 }
 
 .addHoursForm {
-  @apply flex flex-row w-full justify-between;
+  @apply flex lg:flex-row md:flex-col w-full justify-between space-y-8;
 }
 
 .borderLine {
@@ -51,6 +51,17 @@ body {
 
 .inputGroup {
   @apply flex flex-col space-y-2;
+}
+
+.inputGroupRow {
+  @apply flex flex-row gap-8;
+}
+.inputGroupRow input {
+  @apply flex w-full;
+}
+
+.timeDiv{
+  @apply flex flex-col flex-grow space-y-2
 }
 
 .roundedInputStyle {
