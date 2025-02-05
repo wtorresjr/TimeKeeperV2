@@ -15,7 +15,10 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["app/*"]
+      "@app/*": ["app/*"],
+      "@types/*": ["app/types/*"],
+      "@actions/*": ["app/actions/*"],
+      "@loaders/*": ["app/loaders/*"]
     },
     "noEmit": true
   },

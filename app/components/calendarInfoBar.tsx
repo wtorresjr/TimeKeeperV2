@@ -1,6 +1,10 @@
-import { NewHoursCompProps } from "./newHoursComp";
+import type { Client } from "../types/client";
 
-export const CalendarInfoBar = ({ chosenClient }: NewHoursCompProps) => {
+interface Props {
+  chosenClient: Client;
+}
+
+export const CalendarInfoBar: React.FC<Props> = ({ chosenClient }) => {
   const totalHours: number = parseFloat(
     chosenClient.hours.reduce((acc, hour) => acc + hour.hours, 0).toFixed(2)
   );

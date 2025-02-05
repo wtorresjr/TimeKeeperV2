@@ -17,14 +17,3 @@ export async function removeTech(email: string) {
     await prisma.$disconnect();
   }
 }
-
-// removeTech("will@will.com");
-
-// removeTech("bill@bill.com")
-//   .catch((e) => {
-//     console.error(e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });

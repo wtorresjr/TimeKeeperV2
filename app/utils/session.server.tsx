@@ -1,4 +1,3 @@
-// filepath: /home/reinstall/Documents/Dev-Projects/TimeKeeperV2/app/utils/session.server.tsx
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { PrismaClient } from "@prisma/client";
 
@@ -24,26 +23,45 @@ export const createUserSession = async (userId: string, redirectTo: string) => {
   });
 };
 
-export const getUserSession = (request: Request) => {
-  return storage.getSession(request.headers.get("Cookie"));
+export const getUserSession = async (request: Request) => {
+  try {
+    const cookieHeader = request.headers.get("Cookie");
+    if (!cookieHeader) {
+      throw new Error("No cookie present");
+    }
+    return storage.getSession(cookieHeader);
+  } catch (error) {
+    throw redirect("/login");
+  }
 };
 
 export const getUserId = async (request: Request) => {
   const session = await getUserSession(request);
   const userId = session.get("userId");
-  return typeof userId === "string" ? userId : null;
+  return userId ? userId : null;
 };
 
 export const requireUserId = async (request: Request) => {
-  const userId = await getUserId(request);
-  if (!userId) {
-    throw await redirectToLogin(request);
+  try {
+    const session = await getUserSession(request);
+    const userId = session.get("userId");
+
+    if (!userId) {
+      throw redirect("/login");
+    }
+
+    const user = await prisma.tech.findUnique({
+      where: { id: userId.toString() }
+    });
+
+    if (!user) {
+      throw redirect("/login");
+    }
+
+    return user;
+  } catch (error) {
+    throw redirect("/login");
   }
-  const user = await prisma.tech.findUnique({ where: { id: userId } });
-  if (!user) {
-    throw await redirectToLogin(request);
-  }
-  return user;
 };
 
 export async function redirectToLogin(request: Request) {

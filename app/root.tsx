@@ -12,6 +12,7 @@ import { NavBar } from "./components/navBar";
 import { getUserId } from "./utils/session.server";
 import { PrismaClient } from "@prisma/client";
 import "./tailwind.css";
+import { json } from "@remix-run/node";
 
 const prisma = new PrismaClient();
 
@@ -28,15 +29,21 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ request }: { request: Request }) {
+export const loader = async ({ request }: { request: Request }) => {
   const userId = await getUserId(request);
   if (!userId) {
     return { user: null };
   }
 
-  const user = await prisma.tech.findUnique({ where: { id: userId } });
-  return { user };
-}
+  try {
+    const user = await prisma.tech.findUnique({
+      where: { id: userId.toString() },
+    });
+    return json({ user });
+  } catch (error) {
+    return json({ user: null });
+  }
+};
 
 export function Layout({
   children,

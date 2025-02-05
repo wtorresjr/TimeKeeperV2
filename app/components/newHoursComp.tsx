@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useActionData, Form } from "@remix-run/react";
+import type { Client, ActionData } from "../types/client";
 
-export interface NewHoursCompProps {
-  chosenClient: {
-    client_name: string;
-    client_id: string;
-    tech_id: string;
-    client_initials: string;
-    hourly_rate: number;
-    hours: Array<{
-      date: string;
-      hours: number;
-    }>;
-  };
+interface Props {
+  chosenClient: Client;
 }
 
-const NewHoursComp: React.FC<NewHoursCompProps> = ({ chosenClient }) => {
+const NewHoursComp: React.FC<Props> = ({ chosenClient }) => {
   interface ActionData {
     error?: string;
   }

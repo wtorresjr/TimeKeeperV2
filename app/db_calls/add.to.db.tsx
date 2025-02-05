@@ -21,13 +21,3 @@ export async function addTech(
 
   return tech;
 }
-
-
-// addTech("Will", "will@will.com", "password123", false)
-//   .catch((e) => {
-//     console.error(e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });

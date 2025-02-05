@@ -1,32 +1,47 @@
-import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
-import { PrismaClient } from "@prisma/client";
-import { requireUserId } from "../utils/session.server";
+import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import NewHoursComp from "../components/newHoursComp";
-import { action as newHoursAction } from "../components/newHoursComp.server";
-import { CalendarInfoBar } from "@app/components/calendarInfoBar";
+import NewHoursComp from "@app/components/newHoursComp";
+import { CalendarInfoBar } from "../components/calendarInfoBar";
+// import { createHours } from "@app/actions/actions";
+import { Client } from "@app/types/client";
+import { Link } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { requireUserId } from "../utils/session.server";
+import { PrismaClient } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
+import type { Tech } from "../types/client";
 
 const prisma = new PrismaClient();
 
-export const loader = async ({ request }: { request: Request }) => {
-  const user = await requireUserId(request);
+interface LoaderData {
+  clients: Client[];
+  techData: Tech[];
+}
 
-  // Fetch clients for the logged-in tech
-  const clients = await prisma.client.findMany({
-    where: { tech_id: user.id },
-    include: { hours: true },
-  });
+export const loader: LoaderFunction = async ({ request }) => {
+  try {
+    const user = await requireUserId(request);
+    const clients = await prisma.client.findMany({
+      where: { tech_id: user.id },
+      include: { hours: true },
+    });
 
-  return json({ clients });
+    const techs = await prisma.tech.findMany();
+
+    if (clients.length === 0) {
+      return json({ clients: [], techData: techs });
+    }
+
+    return json({ clients, techData: techs });
+  } catch (error) {
+    if (error instanceof Response) throw error;
+    throw redirect("/login");
+  }
 };
 
-export const action = newHoursAction;
-
 export default function Calendar() {
-  const { clients } = useLoaderData<typeof loader>();
-
-  const [selectedClient, setSelectedClient] = useState(clients[0]);
+  const { clients, techData } = useLoaderData<LoaderData>();
+  const [selectedClient, setSelectedClient] = useState<Client>(clients[0]);
   const [showNewHours, setShowNewHours] = useState(false);
 
   const showNewHoursComponent = () => {
@@ -76,6 +91,12 @@ export default function Calendar() {
         </div>
       )}
       {showNewHours && <NewHoursComp chosenClient={selectedClient} />}
+      {techData &&
+        techData.map((tech) => (
+          <div key={tech.id}>
+            {tech.fullName} - {tech.email}
+          </div>
+        ))}
     </div>
   );
 }
