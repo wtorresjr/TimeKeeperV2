@@ -5,6 +5,7 @@ import { requireUserId } from "../utils/session.server";
 import { useState } from "react";
 import NewHoursComp from "../components/newHoursComp";
 import { action as newHoursAction } from "../components/newHoursComp.server";
+import { CalendarInfoBar } from "@app/components/calendarInfoBar";
 
 const prisma = new PrismaClient();
 
@@ -61,6 +62,7 @@ export default function Calendar() {
               Add Hours
             </button>
           </div>
+          <CalendarInfoBar chosenClient={selectedClient} />
         </>
       ) : (
         <div className="centerOnScreen flex-col space-y-4">
